@@ -61,6 +61,43 @@ const HomeStyle = StyleSheet.create({
     borderTopRightRadius: 15,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+
+  cardDetail: {
+    height: 100,
+    borderRadius: 15,
+    backgroundColor: COLORS.floatBgDark,
+    position: 'absolute',
+    bottom: 0,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    width: '100%'
+  },
+
+  cardOverlay:{
+    height: 280,
+    backgroundColor: COLORS.white,
+    position: 'absolute',
+    zIndex: 100,
+    width: cardWidth,
+    borderRadius: 15,
+    opacity: 0
+  },
+  
+  nearestFieldCard: {
+    height: 150,
+    width: 120,
+    backgroundColor: COLORS.white,
+    elevation: 10,
+    marginHorizontal: 10,
+    borderRadius: 10
+  },
+
+  nearestFieldCardImg: {
+    height: 80,
+    width: '100%',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10
   }
 });
 

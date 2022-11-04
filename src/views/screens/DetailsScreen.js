@@ -1,13 +1,42 @@
 import React from "react";
-import { ScrollView, Text } from "react-native";
-import COLORS from "const/colors";
+import {
+  ScrollView,
+  View,
+} from "react-native";
 
-const DetailsScreen = () =>{
-    return(
-        <ScrollView>
-            <Text>Details</Text>
-        </ScrollView>
-    )
-}
+import TopBackground from "components/field_detail/TopBackground";
+import LocationIcon from "components/field_detail/LocationIcon";
+import FieldInfo from "components/field_detail/FieldInfo";
+import MainSchedule from "components/field_detail/MainSchedule";
+import ConfirmBooking from "components/field_detail/ConfirmBooking";
+
+const DetailsScreen = ({ navigation, route }) => {
+  const field = route.params;
+
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        paddingBottom: 20,
+      }}
+    >
+      <TopBackground field={field} navigation={navigation}/>
+
+      <View>
+        {/* LOCATION */}
+        <LocationIcon/>
+
+        {/* CONTENT */}
+        <FieldInfo field={field}/>
+
+        {/* MAIN SCHEDULE */}
+        <MainSchedule/>
+
+        {/* CONFIRM */}
+        <ConfirmBooking field={field}/>
+      </View>
+    </ScrollView>
+  );
+};
 
 export default DetailsScreen;

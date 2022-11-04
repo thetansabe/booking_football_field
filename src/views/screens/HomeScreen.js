@@ -11,35 +11,18 @@ import {
   Image,
 } from "react-native";
 
-import { MaterialIcons, AntDesign } from "@expo/vector-icons";
+import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import COLORS from "const/colors";
 import fields from "const/fields";
 import HomeStyle from "styles/HomeStyle";
 
-import HomeScreenHeader from "components/HomeScreenHeader";
-import CategoryContainer from "components/CategoryContainer";
+import HomeScreenHeader from "components/home/HomeScreenHeader";
+import CategoryContainer from "components/home/CategoryContainer";
+import FieldCard from "components/home/HomeScreenMainCard";
+import NearestField from "components/home/NearestField";
 
 const HomeScreen = ({ navigation }) => {
-  const FieldCard = ({ fbField, index }) => {
-    
-    return (
-        <View
-        style={{...HomeStyle.fieldCard}}
-    >
-        {/* tag */}
-        <View style={HomeStyle.priceTag}>
-            <Text
-                style={{color: COLORS.white, fontSize: 20, fontWeight: 'bold'}}
-            >${fbField.item.price}</Text>
-        </View>
-        {/* image */}
-        <Image
-            source={fbField.item.image}
-            style={{...HomeStyle.cardImg}}
-        />
-    </View>
-    );
-  };
+  
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -66,7 +49,7 @@ const HomeScreen = ({ navigation }) => {
         {/* CATEGORY LIST */}
         <CategoryContainer />
 
-        {/* CARD LIST */}
+        {/* MAIN CARD LIST */}
         <View>
           <FlatList
             horizontal
@@ -77,6 +60,35 @@ const HomeScreen = ({ navigation }) => {
             )}
           />
         </View>
+
+        {/* SUB CARD LIST -> nearest field */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginHorizontal: 20,
+          }}
+        >
+          <Text style={{ fontWeight: "bold", color: COLORS.fontDark }}>
+            Near me
+          </Text>
+
+          <Text style={{ fontWeight: "bold", color: COLORS.grey }}>
+            Show all
+          </Text>
+        </View>
+
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingLeft: 20,
+            marginTop: 20,
+            paddingBottom: 30,
+          }}
+          data={fields}
+          renderItem={(item, index) => <NearestField field={item} navigation={navigation}/>}
+        />
       </ScrollView>
     </SafeAreaView>
   );
