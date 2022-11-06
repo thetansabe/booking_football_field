@@ -1,23 +1,14 @@
-import React from "react";
 import {
-  SafeAreaView,
-  Text,
-  View,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  Dimensions,
-  Image,
+  FlatList, SafeAreaView, ScrollView, Text, TextInput, View
 } from "react-native";
 
-import { FontAwesome, AntDesign } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import COLORS from "const/colors";
 import fields from "const/fields";
 import HomeStyle from "styles/HomeStyle";
 
-import HomeScreenHeader from "components/home/HomeScreenHeader";
 import CategoryContainer from "components/home/CategoryContainer";
+import HomeScreenHeader from "components/home/HomeScreenHeader";
 import FieldCard from "components/home/HomeScreenMainCard";
 import NearestField from "components/home/NearestField";
 

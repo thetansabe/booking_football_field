@@ -1,14 +1,10 @@
-import React from "react";
-import {
-  ScrollView,
-  View,
-} from "react-native";
+import { ScrollView, View } from "react-native";
 
-import TopBackground from "components/field_detail/TopBackground";
-import LocationIcon from "components/field_detail/LocationIcon";
 import FieldInfo from "components/field_detail/FieldInfo";
-import MainSchedule from "components/field_detail/MainSchedule";
-import ConfirmBooking from "components/field_detail/ConfirmBooking";
+import FieldSchedule from "components/field_detail/FieldSchedule";
+import LocationIcon from "components/field_detail/LocationIcon";
+import NavOptions from "components/field_detail/NavOptions";
+import TopBackground from "components/field_detail/TopBackground";
 
 const DetailsScreen = ({ navigation, route }) => {
   const field = route.params;
@@ -20,20 +16,21 @@ const DetailsScreen = ({ navigation, route }) => {
         paddingBottom: 20,
       }}
     >
-      <TopBackground field={field} navigation={navigation}/>
+      <TopBackground field={field} navigation={navigation} />
 
       <View>
         {/* LOCATION */}
-        <LocationIcon/>
+        <LocationIcon />
 
         {/* CONTENT */}
-        <FieldInfo field={field}/>
+        <FieldInfo field={field} />
 
-        {/* MAIN SCHEDULE */}
-        <MainSchedule/>
+        {/* SCHEDULE */}
+        <FieldSchedule />
 
-        {/* CONFIRM */}
-        <ConfirmBooking field={field}/>
+        {/* FOOTER */}
+        <NavOptions navigation={navigation} field={field}/>
+
       </View>
     </ScrollView>
   );

@@ -11,7 +11,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const CartScreen = ({navigation}) => {
   const addedItems = drinks._embedded.items;
   const CartCard = ({ itemInfo }) => {
-    console.log("item", itemInfo);
+    // console.log("item", itemInfo);
     const { index, item } = itemInfo;
 
     return (

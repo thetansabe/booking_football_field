@@ -1,7 +1,6 @@
-import React, { useState } from "react";
 import { View } from "react-native";
 
-import { MaterialIcons, AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import DetailStyle from "styles/DetailStyle";
 

@@ -49,12 +49,7 @@ const App = () => {
     <NavigationContainer>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
 
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
-        <Stack.Screen name="ServiceScreen" component={ServiceScreen} /> */}
-        <Stack.Screen name="CartScreen" component={CartScreen} />
-      </Stack.Navigator>
+      <BottomNavigation/>
 
     </NavigationContainer>
   );
