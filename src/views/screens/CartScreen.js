@@ -1,70 +1,71 @@
-import { View, Text, SafeAreaView, FlatList, Image } from "react-native";
-import React from "react";
-import COLORS from "const/colors";
-import CartStyle from "styles/CartStyle";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import CartCard from "components/service/CartCard";
+import BackNavigation from "components/share/BackNavigation";
 import drinks from "const/drinks";
 import { currencyFormat } from "helpers/helperFunction";
+import {
+  FlatList, SafeAreaView, Text, View
+} from "react-native";
+import { cartStore } from "store/cart-items";
 import DetailStyle from "styles/DetailStyle";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
-const CartScreen = ({navigation}) => {
-  const addedItems = drinks._embedded.items;
-  const CartCard = ({ itemInfo }) => {
-    // console.log("item", itemInfo);
-    const { index, item } = itemInfo;
+const CartScreen = ({ navigation }) => {
+  // const addedItems = drinks._embedded.items;
 
-    return (
-      <View style={CartStyle.cartCard}>
-        {/* left */}
-        <Image source={item.image} style={{ height: 80, width: 80 }} />
-        {/* middle */}
-        <View
-          style={{ height: 100, marginLeft: 10, paddingVertical: 20, flex: 1 }}
-        >
-          <Text
-            style={{ fontWeight: "bold", fontSize: 20, color: COLORS.green }}
-          >
-            {item.name}
-          </Text>
+  //global state
+  const { cart, updateCart } = cartStore((state) => state);
 
-          <Text style={{ fontSize: 16, color: COLORS.fontDark }}>
-            {currencyFormat(item.importPrice, " đ")}/{item.unit}
-          </Text>
-          <Text style={{ fontSize: 16 }}>Còn lại: {item.quantity}</Text>
-        </View>
-        {/* right */}
-        <View style={{ marginRight: 20, alignItems: "center" }}>
-          <Text style={{ fontWeight: "bold", fontSize: 18 }}>3</Text>
-
-          <View style={CartStyle.actionBtn}>
-            <MaterialCommunityIcons name="minus" size={24} color="black" />
-            <MaterialIcons name="add" size={24} color="black" />
-          </View>
-        </View>
-      </View>
-    );
+  const handleDeleteFromCart = (delId) => {
+    const newCart = cart.filter((item) => item.resourceId != delId);
+    updateCart(newCart);
   };
+
+  const handleAddQuantity = (addId) => {
+    const newCart = cart.map((item) =>
+      item.resourceId === addId
+        ? { ...item, buyQuantity: item.buyQuantity + 1 }
+        : item
+    );
+
+    updateCart(newCart);
+  };
+
+  const handleReduceQuantity = (reduceId) => {
+    const newCart = cart.map((item) =>
+      item.resourceId === reduceId
+        ? { ...item, buyQuantity: Math.max(item.buyQuantity - 1, 1) }
+        : item
+    );
+
+    updateCart(newCart);
+  };
+
+  const totalCost = cart.reduce((prev, current) => {
+    const itemCost = current.importPrice * current.buyQuantity
+    return prev + itemCost;
+}, 0);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* HEADER NAV */}
-      <TouchableOpacity style={CartStyle.header} onPress={navigation.goBack}>
-        <MaterialIcons name="arrow-back-ios" size={24} color={COLORS.green} />
-        <Text style={{ color: COLORS.green, fontSize: 22, fontWeight: "bold" }}>
-          Services
-        </Text>
-      </TouchableOpacity>
+      <BackNavigation navigation={navigation} />
 
       {/* MAIN LIST */}
       <FlatList
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 80 }}
-        data={addedItems}
-        renderItem={(itemInfo) => <CartCard itemInfo={itemInfo} />}
+        data={cart}
+        renderItem={(itemInfo) => (
+          <CartCard
+            itemInfo={itemInfo}
+            handleAddQuantity={handleAddQuantity}
+            handleReduceQuantity={handleReduceQuantity}
+            handleDeleteFromCart={handleDeleteFromCart}
+          />
+        )}
         ListFooterComponentStyle={{ marginTop: 20 }}
         ListFooterComponent={() => (
+          // Thanh toan
           <View>
             <View
               style={{
@@ -73,15 +74,21 @@ const CartScreen = ({navigation}) => {
                 marginVertical: 15,
               }}
             >
-              <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 20, top: 8 }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  marginLeft: 20,
+                  top: 8,
+                }}
+              >
                 Thành tiền
               </Text>
               <View style={DetailStyle.priceTag}>
-              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                120,000.00 đ
-              </Text>
+                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                  {currencyFormat(totalCost, ' đ')}
+                </Text>
               </View>
-              
             </View>
             <View style={DetailStyle.btn}>
               <Text

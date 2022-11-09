@@ -7,8 +7,9 @@ import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import DetailStyle from "styles/DetailStyle";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { fieldBookingDateTime } from "store/booking-datetime";
 
-export default function MainSchedule() {
+export default function MainSchedule({setBookedDuration}) {
   const todayRaw = new Date();
   const formatedDate =
     todayRaw.getDate() +
@@ -17,18 +18,21 @@ export default function MainSchedule() {
     "/" +
     todayRaw.getFullYear();
 
-  const [date, setDate] = useState(todayRaw);
+  //states for datetime picker
   const [showPicker, setShowPicker] = useState(false);
   const [pickerMode, setPickerMode] = useState("date");
 
+  //states for render UI
   const [textDate, setTextDate] = useState(formatedDate);
   const [fromTime, setFromTime] = useState("FROM");
   const [toTime, setToTime] = useState("TO");
 
+  // global states
+  const {gDate, gToTime, gFromTime, updateDate, updateFromTime, updateToTime} = fieldBookingDateTime((state) => state);
+
   const pickerOnChange = (event, picked) => {
-    const currDate = picked || date;
+    const currDate = picked || gDate;
     setShowPicker(Platform.OS === "ios");
-    setDate(currDate);
 
     let tmpDate = new Date(currDate);
 
@@ -44,6 +48,11 @@ export default function MainSchedule() {
     let fToTime = tmpDate.getHours() + 1 + ":" + tmpDate.getMinutes();
     setFromTime(fFromTime);
     setToTime(fToTime);
+
+    //global states update
+    updateDate(currDate)
+    updateFromTime(new Date(tmpDate))
+    updateToTime(new Date(tmpDate.getTime() + 60 * 60000))
   };
 
   const handlePickerMode = (mode) => {
@@ -51,40 +60,35 @@ export default function MainSchedule() {
     setPickerMode(mode);
   };
 
-  // viet lai ham nay
-  const handleAdd30 = () => {
-    const toPart = toTime.split(":");
-    const cal = parseInt(toPart[1]) + 30;
+  const handleOffset30 = (type) => {
+    let tmp = new Date();
 
-    let newToTime = "";
+    if (type.toLowerCase() === "add") tmp = gToTime.getTime() + 30 * 60000;
+    else tmp = gToTime.getTime() - 30 * 60000;
 
-    if (cal >= 60) {
-      newToTime = toPart[0] + 1 + ":" + "00";
-      setToTime(newToTime);
-      return;
-    } else {
-      newToTime = toPart[0] + ":" + cal;
-      setToTime(newToTime);
-      return;
-    }
+    const newTime = new Date(tmp);
+    const newToTime = newTime.getHours() + ":" + newTime.getMinutes();
+
+    updateToTime(newTime);
+    setToTime(newToTime);
   };
 
   const calDuration = (from, to) => {
-    const fromPart = from.split(":");
-    const toPart = to.split(":");
+    const diff = Math.abs(to - from)
+    const minDiff = Math.round(diff / 60000)
+    
+    const hours = Math.floor(minDiff / 60);
+    const minutes = minDiff % 60;
 
-    const hourDiff = parseInt(toPart[0]) - parseInt(fromPart[0]);
-    const minDiff = Math.abs(parseInt(toPart[1]) - parseInt(fromPart[1]));
+    const strType = hours + 'h' + minutes + 'p';
 
-    const strType = hourDiff + "h" + minDiff + "p";
-    const numType = hourDiff * 60 + minDiff;
-
-    return { strType, numType };
+    setBookedDuration(minDiff)
+    return { strType, numType: minDiff };
   };
 
   const { strType, numType } =
     fromTime !== "FROM"
-      ? calDuration(fromTime, toTime)
+      ? calDuration(gFromTime, gToTime)
       : { strType: "pick time", numType: 0 };
 
   return (
@@ -126,6 +130,8 @@ export default function MainSchedule() {
             >
               <AntDesign name="clockcircleo" size={24} color="white" />
             </TouchableOpacity>
+
+            <Text style={{ marginTop: 10, fontWeight: "bold" }}>Chọn giờ</Text>
           </View>
 
           {/* seperator */}
@@ -153,12 +159,30 @@ export default function MainSchedule() {
           >
             <Text style={{ fontSize: 20, fontWeight: "bold" }}>{toTime}</Text>
 
-            <TouchableOpacity
-              style={DetailStyle.clockIcon}
-              onPress={() => handleAdd30()}
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <MaterialIcons name="forward-30" size={24} color="white" />
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={DetailStyle.clockIcon}
+                onPress={() => handleOffset30("substract")}
+              >
+                <MaterialIcons
+                  name="settings-backup-restore"
+                  size={24}
+                  color="black"
+                />
+              </TouchableOpacity>
+
+              <View style={{ width: 12 }}></View>
+              <TouchableOpacity
+                style={DetailStyle.clockIcon}
+                onPress={() => handleOffset30("add")}
+              >
+                <MaterialIcons name="forward-30" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={{ marginTop: 10, fontWeight: "bold" }}>± 30p</Text>
           </View>
         </View>
 
@@ -166,7 +190,7 @@ export default function MainSchedule() {
         {showPicker && (
           <DateTimePicker
             testID="dateTimePicker"
-            value={date}
+            value={gDate}
             mode={pickerMode}
             is24Hour={true}
             display="default"

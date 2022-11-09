@@ -1,10 +1,10 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import HomeStyle from 'styles/HomeStyle'
 import COLORS from "const/colors";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 
-export default function HomeScreenHeader() {
+export default function HomeScreenHeader({navigation}) {
   return (
     <View style={HomeStyle.header}>
         {/* Left */}
@@ -34,15 +34,17 @@ export default function HomeScreenHeader() {
             <AntDesign name="user" size={28} color="black" />
           </View>
 
-          <View
+          <TouchableOpacity
             style={{
               backgroundColor: COLORS.floatBgDark,
               padding: 8,
               borderRadius: 50,
             }}
+
+            onPress={() => navigation.navigate('LoginScreen')}
           >
             <MaterialIcons name="logout" size={28} color="white" />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
   )

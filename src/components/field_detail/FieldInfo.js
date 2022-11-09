@@ -11,12 +11,20 @@ export default function FieldInfo({ field }) {
         <Text style={{ fontSize: 24, fontWeight: "bold" }}>{field.name}</Text>
 
         <Text style={{ fontSize: 16, fontWeight: "bold", color: COLORS.green }}>
-          {field.location}
+          19 Nguyễn Hữu Thọ, Quận 7
+        </Text>
+
+        <Text style={{ fontSize: 16, fontWeight: "bold", color: 'white', marginTop: 20 }}>
+          Mở cửa từ 6:00 đến 22:00
+        </Text>
+
+        <Text style={{ fontSize: 16, fontWeight: "bold", color: 'white', marginTop: 10 }}>
+          Giá từ 150,000k/h
         </Text>
 
         <View
           style={{
-            marginTop: 10,
+            marginTop: 20,
             flexDirection: "row",
             justifyContent: "space-between",
           }}

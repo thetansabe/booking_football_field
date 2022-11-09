@@ -1,11 +1,20 @@
-import { View, Text, Image, TouchableHighlight } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import ServiceStyle from "styles/ServiceStyle";
 import COLORS from "const/colors";
 import { currencyFormat } from "helpers/helperFunction";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const ItemCard = ({ itemInfo }) => {
+const ItemCard = ({
+  itemInfo,
+  handleAddToCart
+}) => {
   const { index, item } = itemInfo;
 
   return (
@@ -44,13 +53,16 @@ const ItemCard = ({ itemInfo }) => {
             top: -20,
           }}
         >
-          <View style={ServiceStyle.addCartBtn}>
+          <TouchableOpacity style={ServiceStyle.addCartBtn} onPress={() => {}}>
             <MaterialIcons name="bookmark-outline" size={24} color="black" />
-          </View>
+          </TouchableOpacity>
 
-          <View style={ServiceStyle.addCartBtn}>
+          <TouchableOpacity
+            style={ServiceStyle.addCartBtn}
+            onPress={() => handleAddToCart(item)}
+          >
             <MaterialIcons name="add-shopping-cart" size={24} color="black" />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableHighlight>

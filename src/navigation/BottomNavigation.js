@@ -2,6 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import COLORS from "const/colors";
 import "react-native-gesture-handler";
+import { cartStore } from "store/cart-items";
 import CartScreen from "views/screens/CartScreen";
 import HomeScreen from "views/screens/HomeScreen";
 import StackNavigation from "./StackNavigation";
@@ -9,6 +10,8 @@ import StackNavigation from "./StackNavigation";
 const Tab = createBottomTabNavigator();
 
 const BottomNavigation = () => {
+  const { cart, updateCart } = cartStore((state) => state)
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -40,7 +43,7 @@ const BottomNavigation = () => {
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="shopping-cart" size={24} color={color} />
           ),
-          tabBarBadge: 3,
+          tabBarBadge: cart.length,
         }}
       />
 

@@ -33,7 +33,7 @@ const FieldCard = ({ fbField, index }) => {
                 color: COLORS.green,
               }}
             >
-              {fbField.item.location}
+              19 Nguyễn Hữu Thọ, Quận 7
             </Text>
           </View>
 

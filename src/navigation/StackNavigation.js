@@ -8,6 +8,8 @@ import ServiceScreen from "views/screens/ServiceScreen";
 
 import CartScreen from "views/screens/CartScreen";
 import FieldBookingScreen from "views/screens/FieldBookingScreen";
+import SignInScreen from "views/screens/SignInScreen";
+import SignUpScreen from "views/screens/SignUpScreen";
 
 const Stack = createStackNavigator();
 
@@ -19,6 +21,8 @@ const StackNavigation = () => {
         <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
         <Stack.Screen name="CartScreen" component={CartScreen} />
         <Stack.Screen name="FieldBookingScreen" component={FieldBookingScreen} />
+        <Stack.Screen name="LoginScreen" component={SignInScreen}/>
+        <Stack.Screen name="RegisterScreen" component={SignUpScreen}/>
       </Stack.Navigator>
   )
 }

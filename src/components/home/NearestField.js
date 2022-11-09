@@ -24,7 +24,7 @@ const NearestField = ({ field, navigation }) => {
             {field.item.name}
             </Text>
             <Text style={{ fontSize: 10, fontWeight: "bold", color: COLORS.green }}>
-            {field.item.location}
+            19 Nguyễn Hữu Thọ, Quận 7
             </Text>
             <View style={{ flexDirection: "row-reverse" }}>
             <Text style={{ fontSize: 10, fontWeight: COLORS.grey }}>1.2 km</Text>

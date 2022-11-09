@@ -4,21 +4,23 @@ import {
 
 import { AntDesign } from "@expo/vector-icons";
 import COLORS from "const/colors";
-import fields from "const/fields";
+// import fields from "const/fields";
 import HomeStyle from "styles/HomeStyle";
 
 import CategoryContainer from "components/home/CategoryContainer";
 import HomeScreenHeader from "components/home/HomeScreenHeader";
 import FieldCard from "components/home/HomeScreenMainCard";
 import NearestField from "components/home/NearestField";
+import myFields from "const/myFields";
 
 const HomeScreen = ({ navigation }) => {
   
-
+  const fields = myFields._embedded.footballFields
+  
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       {/* --- HEADER --- */}
-      <HomeScreenHeader />
+      <HomeScreenHeader navigation={navigation}/>
 
       {/* --- SCROLLABLE SECTION --- */}
       <ScrollView showsVerticalScrollIndicator={false}>
