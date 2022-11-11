@@ -13,7 +13,7 @@ const SignInScreen = ({ navigation }) => {
   const { info, updateInfo } = userInfo((state) => state);
   
   // console.log('info', logIn);
-  const handleSignIn = async (body) => {
+  const handleSignIn = async (body, navigation) => {
     try {
       const resp = await fetch(LOGIN, {
         method: "POST",
@@ -22,11 +22,13 @@ const SignInScreen = ({ navigation }) => {
           "Content-Type": "application/json",
         },
       });
-
+      
       const data = await resp.json();
-      console.log("login data: ", data);
-      if (data.status === 200) {
+      console.log('sign in data: ', data);
+      if (data.token) {
+        // console.log('aloo');
         updateInfo(data);
+        navigation.goBack()
       }
     } catch (e) {
       console.log("🚀 ~ file: SignInScreen.js ~ line 28 ~ handleSignIn ~ e", e);
@@ -45,12 +47,12 @@ const SignInScreen = ({ navigation }) => {
           <Text
             style={{ fontSize: 27, fontWeight: "bold", color: COLORS.green }}
           >
-            Welcome Back,
+            Chậm lại chút,
           </Text>
           <Text
             style={{ fontSize: 19, fontWeight: "bold", color: COLORS.light }}
           >
-            Đăng nhập để tiếp tục
+            Bạn cần đăng nhập để sử dụng tính năng
           </Text>
         </View>
 
@@ -84,7 +86,7 @@ const SignInScreen = ({ navigation }) => {
           {/* SIGN IN BUTTON */}
           <TouchableOpacity
             style={STYLES.btnPrimary}
-            onPress={() => handleSignIn(logIn)}
+            onPress={() => handleSignIn(logIn, navigation)}
           >
             <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 18 }}>
               Sign In

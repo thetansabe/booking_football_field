@@ -8,13 +8,13 @@ import ConfirmInfo from "components/field_detail/ConfirmInfo";
 
 const FieldBookingScreen = ({ navigation, route }) => {
   const field = route.params;
-  const [bookedDuration, setBookedDuration] = React.useState(0)
+  const [bookedDuration, setBookedDuration] = React.useState(0);
 
   const calTotalPrice = (field, dur) => {
-    const pricePerMin = field.price / 60
-    return pricePerMin * dur
-  }
-  
+    const pricePerMin = field.price / 60;
+    return pricePerMin * dur;
+  };
+
   return (
     <SafeAreaView>
       {/* BACKER NAV */}
@@ -28,12 +28,17 @@ const FieldBookingScreen = ({ navigation, route }) => {
         <View style={{ borderTopWidth: 4, borderColor: COLORS.green }}></View>
       </View>
 
-      <MainSchedule setBookedDuration={setBookedDuration}/>
+      <MainSchedule setBookedDuration={setBookedDuration} />
 
       {/* CONFIRM */}
-      <ConfirmInfo fieldInfo={field}/>
+      <ConfirmInfo fieldInfo={field} />
 
-      <ConfirmBooking field={field} bookedDuration={bookedDuration} totalPrice={calTotalPrice(field, bookedDuration)}/>
+      <ConfirmBooking
+        field={field}
+        bookedDuration={bookedDuration}
+        totalPrice={calTotalPrice(field, bookedDuration)}
+        navigation={navigation}
+      />
     </SafeAreaView>
   );
 };

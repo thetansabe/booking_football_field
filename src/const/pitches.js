@@ -11,7 +11,7 @@ const pitches = {
 				"quantity": 10,
 				"note": null,
 				"itemCategory": "PITCH",
-				"resourceId": 1,
+				"resourceId": 7,
 				"_links": {
 					"self": {
 						"href": "http://localhost:8080/api/items/1"
@@ -34,7 +34,7 @@ const pitches = {
 				"quantity": 10,
 				"note": null,
 				"itemCategory": "PITCH",
-				"resourceId": 2,
+				"resourceId": 8,
 				"_links": {
 					"self": {
 						"href": "http://localhost:8080/api/items/2"
@@ -57,7 +57,7 @@ const pitches = {
 				"quantity": 10,
 				"note": null,
 				"itemCategory": "PITCH",
-				"resourceId": 3,
+				"resourceId": 6,
 				"_links": {
 					"self": {
 						"href": "http://localhost:8080/api/items/3"

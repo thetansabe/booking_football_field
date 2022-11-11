@@ -68,9 +68,18 @@ const ConfirmInfo = ({ fieldInfo }) => {
             Trạng thái đặt sân
           </Text>
 
-          <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>
-            {bookingStatus}
-          </Text>
+          <View
+            style={{
+              alignItems: "center",
+              backgroundColor: COLORS.yellow,
+              padding: 10,
+              borderRadius: 20,
+            }}
+          >
+            <Text style={{ fontSize: 14, color: COLORS.fontDark }}>
+              {bookingStatus}
+            </Text>
+          </View>
         </View>
       )}
     </View>

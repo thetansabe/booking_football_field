@@ -10,7 +10,6 @@ const GenderPicker = ({ regInfo, updateRegInfo }) => {
 
   const RadioBtn = ({ val, index, setRadioSelected, radioSelected }) => (
     <TouchableOpacity
-      key={val}
       onPress={() => {
         setRadioSelected(index);
         updateRegInfo((prev) => ({ ...prev, sex: val }));
@@ -67,6 +66,7 @@ const GenderPicker = ({ regInfo, updateRegInfo }) => {
       >
         {radioBtnsData.map((value, index) => (
           <RadioBtn
+            key={value}
             val={value}
             index={index}
             setRadioSelected={setRadioSelected}

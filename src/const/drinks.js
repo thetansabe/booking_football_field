@@ -6,7 +6,7 @@ const drinks = {
 				"name": "Coca cola",
 				"status": "HOT",
 				"importPrice": 10000,
-				"unit": "lon",
+				"unit": "chai",
 				"image": require("assets/item_img/coke.png"),
 				"quantity": 10,
 				"note": null,
@@ -57,7 +57,7 @@ const drinks = {
 				"quantity": 10,
 				"note": null,
 				"itemCategory": "DRINK",
-				"resourceId": 3,
+				"resourceId": 4,
 				"_links": {
 					"self": {
 						"href": "http://localhost:8080/api/items/3"
@@ -80,7 +80,7 @@ const drinks = {
 				"quantity": 10,
 				"note": null,
 				"itemCategory": "DRINK",
-				"resourceId": 4,
+				"resourceId": 3,
 				"_links": {
 					"self": {
 						"href": "http://localhost:8080/api/items/4"

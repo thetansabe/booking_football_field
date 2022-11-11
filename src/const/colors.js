@@ -9,7 +9,8 @@ const COLORS = {
     green: '#15865E',
     floatBgDark: '#202427',
     fontDark: '#56585A',
-    blue: '#344BC4'
+    blue: '#344BC4',
+    yellow: '#CCE73F'
   };
   
   export default COLORS;

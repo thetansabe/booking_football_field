@@ -6,28 +6,36 @@ import { currencyFormat } from "helpers/helperFunction";
 import { BEARER_TOKEN, FIELD_ORDER } from "const/apiLinks";
 import { fieldBookingStatusStore } from "store/booking-state";
 import { fieldBookingDateTime } from "store/booking-datetime";
+import {userInfo} from "store/user-info"
 
-export default function ConfirmBooking({ field, bookedDuration, totalPrice }) {
-  // console.log("confirm field", field);
+export default function ConfirmBooking({ navigation, field, bookedDuration, totalPrice }) {
+  const {info} = userInfo(state => state)
+
   const { updateStatus } = fieldBookingStatusStore((state) => state);
-  // global states
   const { gToTime, gFromTime } = fieldBookingDateTime((state) => state);
+  
 
   const handleOrder = async (body) => {
     // body : {fieldId, startTime, toTime, phone}
-    console.log(body);
+    // console.log(body);
+    // console.log('token: ', info.token);
+
+    if(!info.token) {
+      navigation.navigate('LoginScreen')
+    }
+
     try {
       const resp = await fetch(FIELD_ORDER, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${BEARER_TOKEN}`,
+          Authorization: `Bearer ${info.token}`,
         },
       });
 
       const data = await resp.json();
-
+      // console.log('field booking res: ',data);
       if (data.status === 200) {
         updateStatus(data.payment_status);
       }

@@ -50,6 +50,7 @@ const SignUpScreen = ({ navigation }) => {
       console.log("register data: ", data);
       if (data.status === 200) {
         console.log('register thanh cong, tien hanh ...');
+        navigation.navigate('HomeScreen')
       }
     } catch (e) {
       console.log(
