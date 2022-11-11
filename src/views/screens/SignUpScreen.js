@@ -1,47 +1,63 @@
-import "react-native-gesture-handler";
-import React from "react";
-import { SafeAreaView, View, Text, TextInput, Image, LogBox, Button } from "react-native";
-import COLORS from "const/colors";
-import STYLES from "styles/SignStyle";
-import DropDownPicker from "react-native-dropdown-picker";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DobPicker from "components/sign_up/DobPicker";
+import GenderPicker from "components/sign_up/GenderPicker";
+import { REGISTER } from "const/apiLinks";
+import COLORS from "const/colors";
+import React from "react";
+import {
+  Image,
+  LogBox,
+  SafeAreaView,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity
+} from "react-native";
+import "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
+import STYLES from "styles/SignStyle";
 
 const SignUpScreen = ({ navigation }) => {
-  ////states for datetime picker
-  const [showPicker, setShowPicker] = React.useState(false);
-  const [date, setDate] = React.useState(new Date());
-  const [textDate, setTextDate] = React.useState("");
-
-  const pickerOnChange = (event, picked) => {
-    const currDate = picked || date;
-    setShowPicker(Platform.OS === "ios");
-
-    let tmpDate = new Date(currDate);
-
-    let fDate =
-      tmpDate.getDate() +
-      "/" +
-      (tmpDate.getMonth() + 1) +
-      "/" +
-      tmpDate.getFullYear();
-    setTextDate(fDate);
-  };
-
-  //states for gender picker
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(null);
-
-  const [gender, setGender] = React.useState([
-    { label: "Nam", value: "MALE" },
-    { label: "Nữ", value: "FEMALE" },
-    { label: "Khác", value: "OTHER" },
-  ]);
+  const [regInfo, updateRegInfo] = React.useState({
+    sex: "",
+    dob: "",
+    phone: "",
+    email: "",
+    description: "",
+    address: "",
+    fullName: "",
+    username: "",
+    password: "",
+  });
+  console.log("reg infos: ", regInfo);
 
   React.useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
   }, []);
+
+  const handleRegister = async (body) => {
+    try {
+      const resp = await fetch(REGISTER, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await resp.json();
+
+      console.log("register data: ", data);
+      if (data.status === 200) {
+        console.log('register thanh cong, tien hanh ...');
+      }
+    } catch (e) {
+      console.log(
+        "🚀 ~ file: SignUpScreen.js ~ line 30 ~ handleRegister ~ e",
+        e
+      );
+    }
+  };
 
   return (
     <SafeAreaView
@@ -67,17 +83,38 @@ const SignUpScreen = ({ navigation }) => {
           {/* fullname */}
           <View style={STYLES.inputContainer}>
             <FontAwesome name="user" size={24} color={COLORS.green} />
-            <TextInput placeholder="Họ tên" style={STYLES.input} />
+            <TextInput
+              placeholder="Họ tên"
+              style={STYLES.input}
+              onChangeText={(value) =>
+                updateRegInfo((prev) => ({ ...prev, fullName: value }))
+              }
+              value={regInfo.fullName}
+            />
           </View>
           {/* email */}
           <View style={STYLES.inputContainer}>
             <MaterialIcons name="email" size={24} color={COLORS.green} />
-            <TextInput placeholder="Email" style={STYLES.input} />
+            <TextInput
+              placeholder="Email"
+              style={STYLES.input}
+              onChangeText={(value) =>
+                updateRegInfo((prev) => ({ ...prev, email: value }))
+              }
+              value={regInfo.email}
+            />
           </View>
           {/* username */}
           <View style={STYLES.inputContainer}>
             <FontAwesome name="user" size={24} color={COLORS.green} />
-            <TextInput placeholder="Username" style={STYLES.input} />
+            <TextInput
+              placeholder="Username"
+              style={STYLES.input}
+              onChangeText={(value) =>
+                updateRegInfo((prev) => ({ ...prev, username: value }))
+              }
+              value={regInfo.username}
+            />
           </View>
           {/* phone */}
           <View style={STYLES.inputContainer}>
@@ -86,6 +123,10 @@ const SignUpScreen = ({ navigation }) => {
               placeholder="Số điện thoại"
               style={STYLES.input}
               keyboardType="numeric"
+              onChangeText={(value) =>
+                updateRegInfo((prev) => ({ ...prev, phone: value }))
+              }
+              value={regInfo.phone}
             />
           </View>
           {/* password */}
@@ -95,12 +136,23 @@ const SignUpScreen = ({ navigation }) => {
               placeholder="Mật khẩu"
               style={STYLES.input}
               secureTextEntry={true}
+              onChangeText={(value) =>
+                updateRegInfo((prev) => ({ ...prev, password: value }))
+              }
+              value={regInfo.password}
             />
           </View>
           {/* address */}
           <View style={STYLES.inputContainer}>
             <MaterialIcons name="location-on" size={24} color={COLORS.green} />
-            <TextInput placeholder="Địa chỉ" style={STYLES.input} />
+            <TextInput
+              placeholder="Địa chỉ"
+              style={STYLES.input}
+              onChangeText={(value) =>
+                updateRegInfo((prev) => ({ ...prev, address: value }))
+              }
+              value={regInfo.address}
+            />
           </View>
           {/* description */}
           <View style={STYLES.inputContainer}>
@@ -109,64 +161,26 @@ const SignUpScreen = ({ navigation }) => {
               placeholder="Mô tả"
               style={STYLES.input}
               multiline={true}
+              onChangeText={(value) =>
+                updateRegInfo((prev) => ({ ...prev, description: value }))
+              }
+              value={regInfo.description}
             />
           </View>
+
           {/* dob */}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
+          <DobPicker regInfo={regInfo} updateRegInfo={updateRegInfo} />
 
-              marginTop: 20,
-              alignItems: 'center'
-            }}
-          >
-            <Button
-              title="Ngày sinh"
-              onPress={() => setShowPicker(true)}
-              color={COLORS.green}
-            />
-
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{textDate}</Text>
-          </View>
-
-          {showPicker && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode="date"
-              is24Hour={true}
-              display="default"
-              onChange={pickerOnChange}
-            />
-          )}
-
-          {/* sex */}
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={gender}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setGender}
-            style={{ marginTop: 20, borderColor: COLORS.green }}
-            textStyle={{
-              fontSize: 15,
-              color: COLORS.floatBgDark,
-            }}
-            placeholder="Giới tính"
-            placeholderStyle={{
-              color: "grey",
-              fontSize: 18,
-            }}
-          />
+          {/* SEX */}
+          <GenderPicker regInfo={regInfo} updateRegInfo={updateRegInfo} />
 
           {/* BUTTON */}
-          <View style={STYLES.btnPrimary}>
+          <TouchableOpacity style={STYLES.btnPrimary} onPress={() => handleRegister(regInfo)}>
             <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 18 }}>
               Đăng Kí
             </Text>
-          </View>
+          </TouchableOpacity>
+
           <View
             style={{
               marginVertical: 20,

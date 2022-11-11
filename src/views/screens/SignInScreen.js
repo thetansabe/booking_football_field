@@ -5,8 +5,34 @@ import COLORS from "const/colors";
 import STYLES from "styles/SignStyle";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
+import { userInfo } from "store/user-info";
+import { LOGIN } from "const/apiLinks";
 
 const SignInScreen = ({ navigation }) => {
+  const [logIn, setLogIn] = React.useState({ username: "", password: "" });
+  const { info, updateInfo } = userInfo((state) => state);
+  
+  // console.log('info', logIn);
+  const handleSignIn = async (body) => {
+    try {
+      const resp = await fetch(LOGIN, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await resp.json();
+      console.log("login data: ", data);
+      if (data.status === 200) {
+        updateInfo(data);
+      }
+    } catch (e) {
+      console.log("🚀 ~ file: SignInScreen.js ~ line 28 ~ handleSignIn ~ e", e);
+    }
+  };
+
   return (
     <SafeAreaView
       style={{ paddingHorizontal: 20, flex: 1, backgroundColor: COLORS.white }}
@@ -30,28 +56,41 @@ const SignInScreen = ({ navigation }) => {
 
         <View style={{ marginTop: 20 }}>
           <View style={STYLES.inputContainer}>
-            <MaterialIcons
-              name="phone-android"
-              size={24}
-              color={COLORS.green}
+            <MaterialIcons name="person" size={24} color={COLORS.green} />
+            {/* username */}
+            <TextInput
+              placeholder="Username"
+              style={STYLES.input}
+              onChangeText={(value) =>
+                setLogIn((prev) => ({ ...prev, username: value }))
+              }
+              value={logIn.username}
             />
-
-            <TextInput placeholder="Số điện thoại" style={STYLES.input} />
           </View>
 
           <View style={STYLES.inputContainer}>
             <MaterialIcons name="lock" size={24} color={COLORS.green} />
+            {/* password */}
             <TextInput
               placeholder="Mật khẩu"
               style={STYLES.input}
               secureTextEntry
+              onChangeText={(value) =>
+                setLogIn((prev) => ({ ...prev, password: value }))
+              }
+              value={logIn.password}
             />
           </View>
-          <View style={STYLES.btnPrimary}>
+          {/* SIGN IN BUTTON */}
+          <TouchableOpacity
+            style={STYLES.btnPrimary}
+            onPress={() => handleSignIn(logIn)}
+          >
             <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 18 }}>
               Sign In
             </Text>
-          </View>
+          </TouchableOpacity>
+
           <View
             style={{
               marginVertical: 20,
@@ -102,12 +141,14 @@ const SignInScreen = ({ navigation }) => {
           }}
         >
           <Text style={{ color: COLORS.light, fontWeight: "bold" }}>
-            Chưa có tài khoản ? 
+            Chưa có tài khoản ?
           </Text>
-          
-          <View style={{width: 4}}></View>
 
-          <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
+          <View style={{ width: 4 }}></View>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RegisterScreen")}
+          >
             <Text style={{ color: COLORS.green, fontWeight: "bold" }}>
               Đăng kí
             </Text>

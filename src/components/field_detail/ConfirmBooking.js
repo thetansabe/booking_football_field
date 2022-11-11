@@ -26,10 +26,10 @@ export default function ConfirmBooking({ field, bookedDuration, totalPrice }) {
         },
       });
 
-      const data = await resp.json()
-      
+      const data = await resp.json();
+
       if (data.status === 200) {
-        updateStatus(data.payment_status)
+        updateStatus(data.payment_status);
       }
     } catch (e) {
       console.log(
@@ -73,7 +73,17 @@ export default function ConfirmBooking({ field, bookedDuration, totalPrice }) {
 
       {/* Payment button */}
       {/* body : {field_id: field.resourceId, start_time: gFromTime, end_time: gToTime, phone: "0342343249"} */}
-      <TouchableOpacity style={DetailStyle.btn} onPress={() => handleOrder({field_id: field.resourceId, start_time: gFromTime.toISOString().replace(/.\d+Z$/g, ""), end_time: gToTime.toISOString().replace(/.\d+Z$/g, ""), phone: "0342343249"})}>
+      <TouchableOpacity
+        style={DetailStyle.btn}
+        onPress={() =>
+          handleOrder({
+            field_id: field.resourceId,
+            start_time: gFromTime.toISOString().replace(/.\d+Z$/g, ""),
+            end_time: gToTime.toISOString().replace(/.\d+Z$/g, ""),
+            phone: "0342343249",
+          })
+        }
+      >
         <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
           Đặt
         </Text>
